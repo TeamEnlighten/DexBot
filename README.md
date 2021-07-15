@@ -27,6 +27,8 @@
 
  Sprites - lists sprites from Pokemon showdown repositories
 
+If you want to donate:
 
+buymeacoffee.com/teamenlighten
 
 
