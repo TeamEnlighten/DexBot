@@ -13,7 +13,7 @@
 
  @Frail - True coder, she helped clean up code to work properly. Has helped other projects come to life and best co-owner of Discord Server.
 
- Worn Off Keys - template for Command-base, load-commands, and helpful tutorials for learning JS & coding Discord Bots
+ Worn Off Keys - template for Command-base, load-commands, help.js, and helpful tutorials for learning JS & coding Discord Bots
 
  Sableye Bot - template for sprites command - gave me an idea of how to code it - I will update as gen5 has a lot of the sprites but still missing some! 
 
