@@ -2,8 +2,8 @@ const {Dex} = require('pokemon-showdown');
 const SPRITE_URL = 'http://play.pokemonshowdown.com/sprites/';
 
 module.exports = {
-    commands: ['sprite', 'gif'],
-    aliases: ['gif'],
+    commands: ['sprite', 'gif', 's'],
+    aliases: ['gif', 's'],
     description: "GIF of a Pokémon. Uses PokemonShowdown's sprite library.",
     minArgs: 0,
     maxArgs: 3,

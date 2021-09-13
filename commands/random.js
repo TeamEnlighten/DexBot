@@ -1,37 +1,31 @@
 const {Dex} = require('pokemon-showdown');
 const Discord = require('discord.js')
-
-
-// If you setup a bot server or insert custom emojis, fill this out with their id
-// You can also omit this altogether.
-
-
 const emojis = [{
-    type: 'Rock', emoji: '🪨'}, 
-    {type:'Psychic', emoji: '🔮'},
-    {type:'Poison', emoji: '☠️'},
-    {type:'Normal', emoji: '⚪'},
-    {type:'Ice', emoji: '🧊'},
-    {type:'Ground', emoji: '⛰️'},
-    {type:'Grass', emoji: '🌿'},
-    {type:'Ghost', emoji: '👻'},
-    {type:'Flying', emoji: '🕊️'},
-    {type:'Fire', emoji: '🔥'},
-    {type:'Fighting', emoji: '🥊'},
-    {type:'Fairy', emoji: '🧚'},
-    {type:'Electric', emoji: '⚡'},
-    {type:'Dragon', emoji: '🐉'},
-    {type:'Dark', emoji: '⚫'},
-    {type:'Bug', emoji: '🐛'},
-    {type:'Water', emoji: '🌊'},
+    type: 'Rock', emoji: '<:Rock:862271572387430411>'}, 
+    {type:'Psychic', emoji: '<:Psychic:862271574430187560>'},
+    {type:'Poison', emoji: '<:Poison:862271574492315648>'},
+    {type:'Normal', emoji: '<:Normal:862271574526132234>'},
+    {type:'Ice', emoji: '<:Ice:862271573191557140>'},
+    {type:'Ground', emoji: '<:Ground:862271572899135508>'},
+    {type:'Grass', emoji: '<:Grass:862271574497558578>'},
+    {type:'Ghost', emoji: '<:Ghost:862271574484189215>'},
+    {type:'Flying', emoji: '<:Flying:862271574580133888>'},
+    {type:'Fire', emoji: '<:Fire:862271574689579048>'},
+    {type:'Fighting', emoji: '<:Fighting:862271574417080341>'},
+    {type:'Fairy', emoji: '<:Fairy:862271574686040074>'},
+    {type:'Electric', emoji: '<:Electric:862271574647373854>'},
+    {type:'Dragon', emoji: '<:Dragon:862271574816063508>'},
+    {type:'Dark', emoji: '<:Dark:862271127014604800>'},
+    {type:'Bug', emoji: '<:Bug:862271574660874260>'},
+    {type:'Water', emoji: '<:Water:862271572201701406>'},
     {type: 'Bird', emoji: '🐦'},
-    {type:'Steel', emoji: '⚙️'
+    {type:'Steel', emoji: '<:Steel:862271572470923274>'
 }];
 
 
 module.exports = {
-    commands: ['random', 'rand', 'r'],
-    aliases: ['rand', 'r'],
+    commands: ['random', 'r'],
+    aliases: ['r'],
     description: "Selects a random pokemon",
     callback: (message, arguments) => { 
 
