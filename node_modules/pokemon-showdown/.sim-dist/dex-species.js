@@ -1,0 +1,516 @@
+"use strict";Object.defineProperty(exports, "__esModule", {value: true});var _dexdata = require('./dex-data');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ class Species extends _dexdata.BasicEffect  {
+	
+	/**
+	 * Species ID. Identical to ID. Note that this is the full ID, e.g.
+	 * 'basculinbluestriped'. To get the base species ID, you need to
+	 * manually read toID(species.baseSpecies).
+	 */
+	
+	/**
+	 * Name. Note that this is the full name with forme,
+	 * e.g. 'Basculin-Blue-Striped'. To get the name without forme, see
+	 * `species.baseSpecies`.
+	 */
+	
+	/**
+	 * Base species. Species, but without the forme name.
+	 *
+	 * DO NOT ASSUME A POKEMON CAN TRANSFORM FROM `baseSpecies` TO
+	 * `species`. USE `changesFrom` FOR THAT.
+	 */
+	
+	/**
+	 * Forme name. If the forme exists,
+	 * `species.name === species.baseSpecies + '-' + species.forme`
+	 *
+	 * The games make a distinction between Forme (foorumu) (legendary Pokémon)
+	 * and Form (sugata) (non-legendary Pokémon). PS does not use the same
+	 * distinction – they're all "Forme" to PS, reflecting current community
+	 * use of the term.
+	 *
+	 * This property only tracks non-cosmetic formes, and will be `''` for
+	 * cosmetic formes.
+	 */
+	
+	/**
+	 * Base forme name (e.g. 'Altered' for Giratina).
+	 */
+	
+	/**
+	 * Other forms. List of names of cosmetic forms. These should have
+	 * `aliases.js` aliases to this entry, but not have their own
+	 * entry in `pokedex.js`.
+	 */
+	
+	/**
+	 * Other formes. List of names of formes, appears only on the base
+	 * forme. Unlike forms, these have their own entry in `pokedex.js`.
+	 */
+	
+	/**
+	 * List of forme speciesNames in the order they appear in the game data -
+	 * the union of baseSpecies, otherFormes and cosmeticFormes. Appears only on
+	 * the base species forme.
+	 *
+	 * A species's alternate formeindex may change from generation to generation -
+	 * the forme with index N in Gen A is not guaranteed to be the same forme as the
+	 * forme with index in Gen B.
+	 *
+	 * Gigantamaxes are not considered formes by the game (see data/FORMES.md - PS
+	 * labels them as such for convenience) - Gigantamax "formes" are instead included at
+	 * the end of the formeOrder list so as not to interfere with the correct index numbers.
+	 */
+	
+	/**
+	 * Sprite ID. Basically the same as ID, but with a dash between
+	 * species and forme.
+	 */
+	
+	/** Abilities. */
+	
+	/** Types. */
+	
+	/** Added type (added by Trick-Or-Treat or Forest's Curse, but only listed in species by OMs). */
+	
+	/** Pre-evolution. '' if nothing evolves into this Pokemon. */
+	
+	/** Evolutions. Array because many Pokemon have multiple evolutions. */
+	
+	
+	/** Evolution condition. falsy if doesn't evolve. */
+	
+	/** Evolution item. falsy if doesn't evolve. */
+	
+	/** Evolution move. falsy if doesn't evolve. */
+	
+	/** Evolution level. falsy if doesn't evolve. */
+	
+	/** Is NFE? True if this Pokemon can evolve (Mega evolution doesn't count). */
+	
+	/** Egg groups. */
+	
+	/** True if this species can hatch from an Egg. */
+	
+	/**
+	 * Gender. M = always male, F = always female, N = always
+	 * genderless, '' = sometimes male sometimes female.
+	 */
+	
+	/** Gender ratio. Should add up to 1 unless genderless. */
+	
+	/** Base stats. */
+	
+	/** Max HP. Overrides usual HP calculations (for Shedinja). */
+	
+	/** A Pokemon's Base Stat Total */
+	
+	/** Weight (in kg). Not valid for OMs; use weighthg / 10 instead. */
+	
+	/** Weight (in integer multiples of 0.1kg). */
+	
+	/** Height (in m). */
+	
+	/** Color. */
+	
+	/**
+	 * Tags, boolean data. Currently just legendary/mythical status.
+	 */
+	
+	/** Does this Pokemon have an unreleased hidden ability? */
+	
+	/**
+	 * Is it only possible to get the hidden ability on a male pokemon?
+	 * This is mainly relevant to Gen 5.
+	 */
+	
+	/** True if a pokemon is mega. */
+	
+	/** True if a pokemon is primal. */
+	
+	/** Name of its Gigantamax move, if a pokemon is capable of gigantamaxing. */
+	
+	/** If this Pokemon can gigantamax, is its gigantamax released? */
+	
+	/** True if a Pokemon species is incapable of dynamaxing */
+	
+	/** What it transforms from, if a pokemon is a forme that is only accessible in battle. */
+	
+	/** Required item. Do not use this directly; see requiredItems. */
+	
+	/** Required move. Move required to use this forme in-battle. */
+	
+	/** Required ability. Ability required to use this forme in-battle. */
+	
+	/**
+	 * Required items. Items required to be in this forme, e.g. a mega
+	 * stone, or Griseous Orb. Array because Arceus formes can hold
+	 * either a Plate or a Z-Crystal.
+	 */
+	
+
+	/**
+	 * Formes that can transform into this Pokemon, to inherit learnsets
+	 * from. (Like `prevo`, but for transformations that aren't
+	 * technically evolution. Includes in-battle transformations like
+	 * Zen Mode and out-of-battle transformations like Rotom.)
+	 *
+	 * Not filled out for megas/primals - fall back to baseSpecies
+	 * for in-battle formes.
+	 */
+	
+
+	/**
+	 * Singles Tier. The Pokemon's location in the Smogon tier system.
+	 */
+	
+	/**
+	 * Doubles Tier. The Pokemon's location in the Smogon doubles tier system.
+	 */
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	constructor(data) {
+		super(data);
+		data = this;
+
+		this.fullname = `pokemon: ${data.name}`;
+		this.effectType = 'Pokemon';
+		this.baseSpecies = data.baseSpecies || this.name;
+		this.forme = data.forme || '';
+		this.baseForme = data.baseForme || '';
+		this.cosmeticFormes = data.cosmeticFormes || undefined;
+		this.otherFormes = data.otherFormes || undefined;
+		this.formeOrder = data.formeOrder || undefined;
+		this.spriteid = data.spriteid ||
+			(_dexdata.toID.call(void 0, this.baseSpecies) + (this.baseSpecies !== this.name ? `-${_dexdata.toID.call(void 0, this.forme)}` : ''));
+		this.abilities = data.abilities || {0: ""};
+		this.types = data.types || ['???'];
+		this.addedType = data.addedType || undefined;
+		this.prevo = data.prevo || '';
+		this.tier = data.tier || '';
+		this.doublesTier = data.doublesTier || '';
+		this.evos = data.evos || [];
+		this.evoType = data.evoType || undefined;
+		this.evoMove = data.evoMove || undefined;
+		this.evoLevel = data.evoLevel || undefined;
+		this.nfe = data.nfe || false;
+		this.eggGroups = data.eggGroups || [];
+		this.canHatch = data.canHatch || false;
+		this.gender = data.gender || '';
+		this.genderRatio = data.genderRatio || (this.gender === 'M' ? {M: 1, F: 0} :
+			this.gender === 'F' ? {M: 0, F: 1} :
+			this.gender === 'N' ? {M: 0, F: 0} :
+			{M: 0.5, F: 0.5});
+		this.requiredItem = data.requiredItem || undefined;
+		this.requiredItems = this.requiredItems || (this.requiredItem ? [this.requiredItem] : undefined);
+		this.baseStats = data.baseStats || {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0};
+		this.bst = this.baseStats.hp + this.baseStats.atk + this.baseStats.def +
+			this.baseStats.spa + this.baseStats.spd + this.baseStats.spe;
+		this.weightkg = data.weightkg || 0;
+		this.weighthg = this.weightkg * 10;
+		this.heightm = data.heightm || 0;
+		this.color = data.color || '';
+		this.tags = data.tags || [];
+		this.unreleasedHidden = data.unreleasedHidden || false;
+		this.maleOnlyHidden = !!data.maleOnlyHidden;
+		this.maxHP = data.maxHP || undefined;
+		this.isMega = !!(this.forme && ['Mega', 'Mega-X', 'Mega-Y'].includes(this.forme)) || undefined;
+		this.canGigantamax = data.canGigantamax || undefined;
+		this.gmaxUnreleased = !!data.gmaxUnreleased;
+		this.cannotDynamax = !!data.cannotDynamax;
+		this.battleOnly = data.battleOnly || (this.isMega ? this.baseSpecies : undefined);
+		this.changesFrom = data.changesFrom ||
+			(this.battleOnly !== this.baseSpecies ? this.battleOnly : this.baseSpecies);
+		if (Array.isArray(data.changesFrom)) this.changesFrom = data.changesFrom[0];
+
+		if (!this.gen && this.num >= 1) {
+			if (this.num >= 810 || ['Gmax', 'Galar', 'Galar-Zen'].includes(this.forme)) {
+				this.gen = 8;
+			} else if (this.num >= 722 || this.forme.startsWith('Alola') || this.forme === 'Starter') {
+				this.gen = 7;
+			} else if (this.forme === 'Primal') {
+				this.gen = 6;
+				this.isPrimal = true;
+				this.battleOnly = this.baseSpecies;
+			} else if (this.num >= 650 || this.isMega) {
+				this.gen = 6;
+			} else if (this.num >= 494) {
+				this.gen = 5;
+			} else if (this.num >= 387) {
+				this.gen = 4;
+			} else if (this.num >= 252) {
+				this.gen = 3;
+			} else if (this.num >= 152) {
+				this.gen = 2;
+			} else {
+				this.gen = 1;
+			}
+		}
+	}
+} exports.Species = Species;
+
+ class Learnset {
+	
+	/**
+	 * Keeps track of exactly how a pokemon might learn a move, in the
+	 * form moveid:sources[].
+	 */
+	
+	/** True if the only way to get this Pokemon is from events. */
+	
+	/** List of event data for each event. */
+	
+	
+	
+
+	constructor(data) {
+		this.exists = true;
+		this.effectType = 'Learnset';
+		this.learnset = data.learnset || undefined;
+		this.eventOnly = !!data.eventOnly;
+		this.eventData = data.eventData || undefined;
+		this.encounters = data.encounters || undefined;
+	}
+} exports.Learnset = Learnset;
+
+ class DexSpecies {
+	
+	 __init() {this.speciesCache = new Map()}
+	 __init2() {this.learnsetCache = new Map()}
+	__init3() {this.allCache = null}
+
+	constructor(dex) {;DexSpecies.prototype.__init.call(this);DexSpecies.prototype.__init2.call(this);DexSpecies.prototype.__init3.call(this);
+		this.dex = dex;
+	}
+
+	get(name) {
+		if (name && typeof name !== 'string') return name;
+
+		name = (name || '').trim();
+		let id = _dexdata.toID.call(void 0, name);
+		if (id === 'nidoran' && name.endsWith('♀')) {
+			id = 'nidoranf' ;
+		} else if (id === 'nidoran' && name.endsWith('♂')) {
+			id = 'nidoranm' ;
+		}
+
+		return this.getByID(id);
+	}
+	getByID(id) {
+		let species = this.speciesCache.get(id);
+		if (species) return species;
+
+		if (this.dex.data.Aliases.hasOwnProperty(id)) {
+			if (this.dex.data.FormatsData.hasOwnProperty(id)) {
+				// special event ID, like Rockruff-Dusk
+				const baseId = _dexdata.toID.call(void 0, this.dex.data.Aliases[id]);
+				species = new Species({
+					...this.dex.data.Pokedex[baseId],
+					...this.dex.data.FormatsData[id],
+					name: id,
+				});
+				species.abilities = {0: species.abilities['S']};
+			} else {
+				species = this.get(this.dex.data.Aliases[id]);
+				if (species.cosmeticFormes) {
+					for (const forme of species.cosmeticFormes) {
+						if (_dexdata.toID.call(void 0, forme) === id) {
+							species = new Species({
+								...species,
+								name: forme,
+								forme: forme.slice(species.name.length + 1),
+								baseForme: "",
+								baseSpecies: species.name,
+								otherFormes: null,
+								cosmeticFormes: null,
+							});
+							break;
+						}
+					}
+				}
+			}
+			this.speciesCache.set(id, species);
+			return species;
+		}
+
+		if (!this.dex.data.Pokedex.hasOwnProperty(id)) {
+			let aliasTo = '';
+			const formeNames = {
+				alola: ['a', 'alola', 'alolan'],
+				galar: ['g', 'galar', 'galarian'],
+				mega: ['m', 'mega'],
+				primal: ['p', 'primal'],
+			};
+			for (const forme in formeNames) {
+				let pokeName = '';
+				for (const i of formeNames[forme]) {
+					if (id.startsWith(i)) {
+						pokeName = id.slice(i.length);
+					} else if (id.endsWith(i)) {
+						pokeName = id.slice(0, -i.length);
+					}
+				}
+				if (this.dex.data.Aliases.hasOwnProperty(pokeName)) pokeName = _dexdata.toID.call(void 0, this.dex.data.Aliases[pokeName]);
+				if (this.dex.data.Pokedex[pokeName + forme]) {
+					aliasTo = pokeName + forme;
+					break;
+				}
+			}
+			if (aliasTo) {
+				species = this.get(aliasTo);
+				if (species.exists) {
+					this.speciesCache.set(id, species);
+					return species;
+				}
+			}
+		}
+		if (id && this.dex.data.Pokedex.hasOwnProperty(id)) {
+			const pokedexData = this.dex.data.Pokedex[id];
+			const baseSpeciesTags = pokedexData.baseSpecies && this.dex.data.Pokedex[_dexdata.toID.call(void 0, pokedexData.baseSpecies)].tags;
+			species = new Species({
+				tags: baseSpeciesTags,
+				...pokedexData,
+				...this.dex.data.FormatsData[id],
+			});
+			// Inherit any statuses from the base species (Arceus, Silvally).
+			const baseSpeciesStatuses = this.dex.data.Conditions[_dexdata.toID.call(void 0, species.baseSpecies)];
+			if (baseSpeciesStatuses !== undefined) {
+				let key;
+				for (key in baseSpeciesStatuses) {
+					if (!(key in species)) (species )[key] = baseSpeciesStatuses[key];
+				}
+			}
+			if (!species.tier && !species.doublesTier && species.baseSpecies !== species.name) {
+				if (species.baseSpecies === 'Mimikyu') {
+					species.tier = this.dex.data.FormatsData[_dexdata.toID.call(void 0, species.baseSpecies)].tier || 'Illegal';
+					species.doublesTier = this.dex.data.FormatsData[_dexdata.toID.call(void 0, species.baseSpecies)].doublesTier || 'Illegal';
+				} else if (species.id.endsWith('totem')) {
+					species.tier = this.dex.data.FormatsData[species.id.slice(0, -5)].tier || 'Illegal';
+					species.doublesTier = this.dex.data.FormatsData[species.id.slice(0, -5)].doublesTier || 'Illegal';
+				} else if (species.battleOnly) {
+					species.tier = this.dex.data.FormatsData[_dexdata.toID.call(void 0, species.battleOnly)].tier || 'Illegal';
+					species.doublesTier = this.dex.data.FormatsData[_dexdata.toID.call(void 0, species.battleOnly)].doublesTier || 'Illegal';
+				} else {
+					const baseFormatsData = this.dex.data.FormatsData[_dexdata.toID.call(void 0, species.baseSpecies)];
+					if (!baseFormatsData) {
+						throw new Error(`${species.baseSpecies} has no formats-data entry`);
+					}
+					species.tier = baseFormatsData.tier || 'Illegal';
+					species.doublesTier = baseFormatsData.doublesTier || 'Illegal';
+				}
+			}
+			if (!species.tier) species.tier = 'Illegal';
+			if (!species.doublesTier) species.doublesTier = species.tier ;
+			if (species.gen > this.dex.gen) {
+				species.tier = 'Illegal';
+				species.doublesTier = 'Illegal';
+				species.isNonstandard = 'Future';
+			}
+			if (this.dex.currentMod === 'letsgo' && !species.isNonstandard) {
+				const isLetsGo = (
+					(species.num <= 151 || ['Meltan', 'Melmetal'].includes(species.name)) &&
+					(!species.forme || ['Alola', 'Mega', 'Mega-X', 'Mega-Y', 'Starter'].includes(species.forme))
+				);
+				if (!isLetsGo) species.isNonstandard = 'Past';
+			}
+			species.nfe = !!(species.evos.length && this.get(species.evos[0]).gen <= this.dex.gen);
+			species.canHatch = species.canHatch ||
+				(!['Ditto', 'Undiscovered'].includes(species.eggGroups[0]) && !species.prevo && species.name !== 'Manaphy');
+			if (this.dex.gen === 1) species.bst -= species.baseStats.spd;
+			if (this.dex.gen < 5) delete species.abilities['H'];
+		} else {
+			species = new Species({
+				id, name: id,
+				exists: false, tier: 'Illegal', doublesTier: 'Illegal', isNonstandard: 'Custom',
+			});
+		}
+		if (species.exists) this.speciesCache.set(id, species);
+		return species;
+	}
+
+	getLearnset(id) {
+		return this.getLearnsetData(id).learnset;
+	}
+
+	getLearnsetData(id) {
+		let learnsetData = this.learnsetCache.get(id);
+		if (learnsetData) return learnsetData;
+		if (!this.dex.data.Learnsets.hasOwnProperty(id)) {
+			return new Learnset({exists: false});
+		}
+		learnsetData = new Learnset(this.dex.data.Learnsets[id]);
+		this.learnsetCache.set(id, learnsetData);
+		return learnsetData;
+	}
+
+	all() {
+		if (this.allCache) return this.allCache;
+		const species = [];
+		for (const id in this.dex.data.Pokedex) {
+			species.push(this.getByID(id ));
+		}
+		this.allCache = species;
+		return this.allCache;
+	}
+} exports.DexSpecies = DexSpecies;
+
+ //# sourceMappingURL=sourceMaps/dex-species.js.map

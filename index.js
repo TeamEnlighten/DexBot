@@ -1,6 +1,6 @@
 const Discord = require('discord.js')
 const client = new Discord.Client()
-const config = require('./config.json')
+//const config = require('./config.json')
 const loadCommands = require('./commands/load-commands')
 
 //Enable this if you are getting an Emitter Warning.
@@ -10,7 +10,7 @@ EventEmitter.defaultMaxListeners = 50
 */
 
 client.on('ready', async () => {
-    console.log(`${client.user.tag} is sleeping on the job again...`)
+    console.log(`${client.user.tag} is ready to export Pokemon Data!`)
 
     loadCommands(client)  
 
@@ -20,4 +20,4 @@ client.on('ready', async () => {
 
 })
 
-client.login(config.token)
+client.login(process.env.TOKEN)

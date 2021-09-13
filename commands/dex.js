@@ -1,33 +1,27 @@
 const {Dex} = require('pokemon-showdown');
 const Discord = require('discord.js')
-
-
-// If you setup a bot server or insert custom emojis, fill this out with their id
-// You can also omit this altogether.
-
-
+const test2 = require('../dex.json')
 const emojis = [{
-    type: 'Rock', emoji: '🪨'}, 
-    {type:'Psychic', emoji: '🔮'},
-    {type:'Poison', emoji: '☠️'},
-    {type:'Normal', emoji: '⚪'},
-    {type:'Ice', emoji: '🧊'},
-    {type:'Ground', emoji: '⛰️'},
-    {type:'Grass', emoji: '🌿'},
-    {type:'Ghost', emoji: '👻'},
-    {type:'Flying', emoji: '🕊️'},
-    {type:'Fire', emoji: '🔥'},
-    {type:'Fighting', emoji: '🥊'},
-    {type:'Fairy', emoji: '🧚'},
-    {type:'Electric', emoji: '⚡'},
-    {type:'Dragon', emoji: '🐉'},
-    {type:'Dark', emoji: '⚫'},
-    {type:'Bug', emoji: '🐛'},
-    {type:'Water', emoji: '🌊'},
+    type: 'Rock', emoji: '<:Rock:862271572387430411>'}, 
+    {type:'Psychic', emoji: '<:Psychic:862271574430187560>'},
+    {type:'Poison', emoji: '<:Poison:862271574492315648>'},
+    {type:'Normal', emoji: '<:Normal:862271574526132234>'},
+    {type:'Ice', emoji: '<:Ice:862271573191557140>'},
+    {type:'Ground', emoji: '<:Ground:862271572899135508>'},
+    {type:'Grass', emoji: '<:Grass:862271574497558578>'},
+    {type:'Ghost', emoji: '<:Ghost:862271574484189215>'},
+    {type:'Flying', emoji: '<:Flying:862271574580133888>'},
+    {type:'Fire', emoji: '<:Fire:862271574689579048>'},
+    {type:'Fighting', emoji: '<:Fighting:862271574417080341>'},
+    {type:'Fairy', emoji: '<:Fairy:862271574686040074>'},
+    {type:'Electric', emoji: '<:Electric:862271574647373854>'},
+    {type:'Dragon', emoji: '<:Dragon:862271574816063508>'},
+    {type:'Dark', emoji: '<:Dark:862271127014604800>'},
+    {type:'Bug', emoji: '<:Bug:862271574660874260>'},
+    {type:'Water', emoji: '<:Water:862271572201701406>'},
     {type: 'Bird', emoji: '🐦'},
-    {type:'Steel', emoji: '⚙️'
+    {type:'Steel', emoji: '<:Steel:862271572470923274>'
 }];
-
 
 module.exports = {
     commands: ['dex', 'd'],
@@ -35,17 +29,14 @@ module.exports = {
     description: "Shows a PokeDex entry",
     minArgs: 1,
     expectedArgs: "<pokemon name or number>",
-    callback: (message, arguments) => { 
-   
+    callback: (message) => { 
+
         let command = message.content.substring(message.content.indexOf(" ") + 1, message.content.length);
                
         const number = command
-
+        poke = number.toLowerCase()
         const pokemon = Dex.species.all()
-
         var id_filter = number;
-
-       poke = number.toLowerCase()
 
        if (poke === 'missingno' || poke === 'missing no' || poke === 'missing no.' || poke === 'missingno.' || poke === '0') {
 
@@ -73,8 +64,8 @@ module.exports = {
               let SPE = result.baseStats.spe
               let TIER = result.tier
               
-                 TYPE1 = '🐦 Bird'
-                 TYPE2 = '⚪ Normal'
+                 TYPE1 = '🐦'
+                 TYPE2 = '<:Normal:862271574526132234>'
 
                 type = TYPE1 + '\n' + TYPE2
 
@@ -100,12 +91,11 @@ module.exports = {
                   { name: 'Base Speed', value: `⚡ ${SPE}`, inline: true },
               )
               .setImage(`http://play.pokemonshowdown.com/sprites/gen1/missingno.png`)
-              .setFooter(`| Height: ${HT} m | Weight: ${WT} kg |`, `<insert image link here>`) //insert generic or custom pokedex image link here.
+              .setFooter(`| Height: ${HT} m | Weight: ${WT} kg |`, `https://i.imgur.com/TSTyfLb.png`)
 
               message.channel.send(mnoembed)      
 
         return
-
 
         } else if (id_filter >= 1 && id_filter <= 898) {
             no = `${number}`
@@ -126,35 +116,29 @@ module.exports = {
             
         if (poke3.length > 1) {
 
-
             str2 = `${poke3[1]}`
-
             poke5 = str2.split("-")
-
             arr = poke5.concat(poke3[0])
             test = arr.join("")
             test1 = 'mimegalarmr'
 
-
             if (arr.length > 2) {
 
-                    if (test === test1) {
+                if (test === test1) {
 
-                        poke6 = 'Mr. Mime-Galar'
-                    
-                        var filtered = pokemon.filter(function(item) {
-                          return poke6.indexOf(item.name) !== -1 && item.name == 'Mr. Mime-Galar'
-                      });
-                    } else {
-                        message.channel.send('Please Check for Spelling Errors.')
-                         return
-
-                    }
-        
-                    } else
-
-               { poke4 = poke3.join("")
+                    poke6 = 'Mr. Mime-Galar'
                 
+                    var filtered = pokemon.filter(function(item) {
+                        return poke6.indexOf(item.name) !== -1 && item.name == 'Mr. Mime-Galar'
+                    });
+                } else {
+                    message.channel.send('Please Check for Spelling Errors. <@!471026063498018823> has been notified.')
+                        return
+                }
+            } else { 
+                
+                poke4 = poke3.join("")
+
                 var filtered = pokemon.filter(function(item) {
                return poke4.indexOf(item.id) !== -1 
                 }); 
@@ -175,16 +159,14 @@ module.exports = {
                 poke4 = poke3.join("")
                 
                 var filtered = pokemon.filter(function(item) {
-               return poke4.indexOf(item.id) !== -1 
+               return poke4.indexOf(item.id) !== -1 && item.id === `${poke4}`
                 }); 
-        } else { message.channel.send('Please Check for Spelling Errors.')
-             return 
+            } else { message.channel.send('Please Check for Spelling Errors or Report to enlighten1self.')
+            return 
             }
         }
 
         let result = filtered.shift()
-
-        //console.log(result)
 
         if (result === undefined) {
             message.reply('please enter a valid dex entry!');
@@ -243,7 +225,22 @@ module.exports = {
         let ABILITY = result.abilities[0]
         let HT = result.heightm
         let WT = result.weightkg
-        //let DESC = result.shortDesc // No Data available in Pokemon-Showdown API, will be adding via JSON
+
+        var filter2 = test2.filter(function(item) {
+            return ID2.indexOf(item.name) !== -1 
+             })
+
+        let DESC = ''
+        let SPECIES = ''
+    
+             if (filter2[0] === undefined) {
+                 DESC = 'Description Coming Soon!'
+                 SPECIES = 'Species TBD'
+             } else {
+                DESC = filter2[0]['desc']
+                SPECIES = filter2[0]['species']
+             }
+    
         let ABILITY1 = result.abilities[1]
         let ABILITYH = result.abilities['H']
 
@@ -263,15 +260,14 @@ module.exports = {
                ability = ABILITY + '\n' + ABILITY1 + '\n' + ABILITYH + ' \`\`(H)\`\`'
               }
 
-            icons = `https://play.pokemonshowdown.com/sprites/gen5/${ID}.png`
-
-            image = `https://play.pokemonshowdown.com/sprites/ani/${ID}.gif`
+        icons = `https://play.pokemonshowdown.com/sprites/gen5/${ID}.png`
+        image = `https://play.pokemonshowdown.com/sprites/ani/${ID}.gif`
 
         const embed = new Discord.MessageEmbed()
-        .setAuthor(`No. ${NUM} - Species Info TBD`, `${icons}`) // I plan to add species info via JSON, omit for now
+        .setAuthor(`No. ${NUM} - ${SPECIES}`, `${icons}`)
         .setTitle(`${name}`)
         .setColor('#ff0000')
-        .setDescription('Descriptions coming soon!') // I will also be adding this info via JSON 
+        .setDescription(`${DESC}`)
         .addFields(
             { name: 'Type', value: `${type}`, inline: true },
             { name: 'Abilities', value: ability, inline: true },
@@ -284,7 +280,7 @@ module.exports = {
             { name: 'Base Speed', value: `⚡ ${SPE}`, inline: true },
         )
         .setImage(image)
-        .setFooter(`| Height: ${HT} m | Weight: ${WT} kg |`, `<insert image link here>`) //insert generic or custom pokedex image link here.
+        .setFooter(`| Height: ${HT} m | Weight: ${WT} kg |`, `https://i.imgur.com/TSTyfLb.png`)
 
         message.channel.send(embed)
 
