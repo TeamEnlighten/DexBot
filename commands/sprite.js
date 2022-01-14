@@ -1,209 +1,283 @@
 const {Dex} = require('pokemon-showdown');
+const Discord = require('discord.js');
 const SPRITE_URL = 'http://play.pokemonshowdown.com/sprites/';
+const fem = ['']
 
 module.exports = {
-    commands: ['sprite', 'gif', 's'],
-    aliases: ['gif', 's'],
+    category: 'Pokedex',
     description: "GIF of a Pokémon. Uses PokemonShowdown's sprite library.",
     minArgs: 0,
-    maxArgs: 3,
-    expectedArgs: "<shiny> <afd, back, female noani> <pokemon name>",
-    callback: (message, arguments) => { 
+    maxArgs: 8,
+    expectedArgs: "<pokemon name> <shiny> <back> <female> <ani/noani> <afd>",
+    slash: true,
+    testOnly: false,
+    options: [
+      {
+        name: 'pokemon',
+        description: 'Pokemon Name',
+        required: false,
+        type: Discord.Constants.ApplicationCommandOptionTypes.STRING  
+      },
+      {
+        name: 'shiny',
+        description: 'Shiny or Not',
+        required: false,
+        type: Discord.Constants.ApplicationCommandOptionTypes.BOOLEAN
+      },
+      {
+        name: 'ani',
+        description: 'Animated or Not',
+        required: false,
+        type: Discord.Constants.ApplicationCommandOptionTypes.BOOLEAN
+      },
+      {
+        name: 'back',
+        description: 'Back or Front',
+        required: false,
+        type: Discord.Constants.ApplicationCommandOptionTypes.BOOLEAN
+      },
+      {
+        name: 'female',
+        description: 'Female or Not',
+        required: false,
+        type: Discord.Constants.ApplicationCommandOptionTypes.BOOLEAN
+      },
+      {
+        name: 'afd',
+        description: 'April Fools Day',
+        required: false,
+        type: Discord.Constants.ApplicationCommandOptionTypes.BOOLEAN
+      },
+    ],
 
-    if (message.content.toLowerCase() === '!sprite' || message.content.toLowerCase() === '!gif'){   //Manually update prefix if changed.
-        message.channel.send("**__PokemonShowdown's Sprite Directory:__** \nhttp://play.pokemonshowdown.com/sprites/")      
-      return;
-    }
+    callback: async ({interaction, args}) => { 
 
-    const arg = arguments[0].toLowerCase()
-    dc = ''
+      if (args.length === 0) {
+        interaction.reply({
+          content: `**__PokemonShowdown's Sprite Directory:__** \n${SPRITE_URL}`,
+          ephemeral: true,
+        })
+      } else {
 
-    function pcheck(poke) {
-      const pokemon = Dex.species.all()
-      str = `${spriteId}`
-      poke = str.split("-");
+      const arg = interaction.options.getString('pokemon')
+      const arg1 = interaction.options.getBoolean('shiny')
+      const arg2 = interaction.options.getBoolean('ani')
+      const arg3 = interaction.options.getBoolean('back')
+      const arg4 = interaction.options.getBoolean('female')
+      const arg5 = interaction.options.getBoolean('afd')
+      let spriteId = arg 
+      let dir = ''
+      let dc = ''
+      let ending = '.gif'
 
-      for (let i = 0; i < poke.length; i++) {
-        poke[i] = poke[i][0].toUpperCase() + poke[i].substr(1);
-      }
-      pokeG = poke[1]
-     // console.log(pokeG)
-      poke2 = poke.join("-");
+      function numConvert(numC) {
+        const pokemon = Dex.species.all()
+        numC = `${spriteId}`
 
-        var filtered = pokemon.filter(function(item) {
-          return poke2.indexOf(item.name) !== -1 && item.name == `${poke2}`;
-      });
-      //console.log(filtered)
-      let check = filtered.shift()
+        if (numC >= 1 && numC <= 898) {
+          
+          var convert = pokemon.filter(function(item) {
+              return numC.indexOf(item.num) !== -1 && item.num == `${numC}`;
+          });
 
-      if (check === undefined) {
-        message.channel.send(`\`\`404 Error: Sprite does not exist.\`\``);
-        dc = 'dnc'
-        return dc
-      }   
-    }
+          let result = convert.shift()
+          let returned = result.name
+          spriteId = returned.toLowerCase()
+          
+        }
+        return spriteId
+      } 
 
-    function pcheck2(poke) {
-      str = `${spriteId}`
-      poke = str.split("-");
+      numConvert(spriteId) 
 
-      for (let i = 0; i < poke.length; i++) {
-        poke[i] = poke[i][0].toUpperCase() + poke[i].substr(1);
-      }
-      pokeG = poke[1]
-     
-      if (pokeG === 'Galar' || pokeG === 'Gmax') {
-        message.channel.send(`\`\`404 Error: Sprite does not exist.\`\``);
-        dc = 'dnc'
-        return dc
-      }   
-    }
-
-    let ending = '.gif';
+      function pcheck(poke) {
+        const pokemon = Dex.species.all()
+          str = `${spriteId}`
+          poke = str.split("-");
     
-    if (arg === 'missingno') {
-      dir = 'gen1';
-      spriteId = arg
-      ending = '.png'
+          for (let i = 0; i < poke.length; i++) {
+            poke[i] = poke[i][0].toUpperCase() + poke[i].substr(1);
+          }
+          pokeG = poke[1]
+          poke2 = poke.join("-");
+    
+            var filtered = pokemon.filter(function(item) {
+              return poke2.indexOf(item.name) !== -1 && item.name == `${poke2}`;
+          });
 
-    } else if (arg === 'missingno-aerodactyl') {
-      dir = 'gen1';
-      spriteId = arg
-      ending = '.png'
-
-    } else if (arg === 'missingno-kabutops') {
-      dir = 'gen1';
-      spriteId = arg
-      ending = '.png'
-
-    } else if (arg === 'missingno-ghost') {
-      dir = 'gen1';
-      spriteId = arg
-      ending = '.png'
-
-    } else if (arg === 'missingno-yellow') {
-      dir = 'gen1';
-      spriteId = arg
-      ending = '.png'
-
-    } else if (arg === 'back' || arg === 'b') {
-      arg1 = arguments[1].toLowerCase()
-      spriteId = arg1
-      dir = 'ani-back';
-      pcheck(spriteId) 
-        if (dc === 'dnc') { return } 
-
-    } else if (arg === 'shiny' || arg === 's') {
-      arg1 = arguments[1].toLowerCase()
-
-       if (arg1 === 'back' || arg1 === 'b') {
-        arg2 = arguments[2].toLowerCase()
-        spriteId = arg2
-        dir = 'ani-back-shiny';
-        pcheck(spriteId) 
-          if (dc === 'dnc') { return } 
-
-      } else if (arg1 === 'noani' || arg1 === 'na') {
-        dir = 'dex-shiny';
-        arg2 = arguments[2].toLowerCase()
-        spriteId = arg2
-        ending = '.png'
-        pcheck(spriteId) 
-        pcheck2(spriteId) 
-          if (dc === 'dnc') { return } 
-
-      } else if (arg1 === 'afd') {
-        dir = 'afd-shiny';
-        arg2 = arguments[2].toLowerCase()
-        spriteId = arg2
-        ending = '.png'
-        pcheck(spriteId)  
-          if (dc === 'dnc') { return }
-
-      } else if (arg1 === 'female' || arg1 === 'f' ) {
-          arg2 = arguments[2].toLowerCase()
-          spriteId = arg2
-          spriteId2 = (arg2 + '-f')
-          dir = 'ani-shiny'
-          pcheck(spriteId) 
-         if (dc === 'dnc') { return } 
-         message.channel.send(`${SPRITE_URL}${dir}/${spriteId2}${ending}`)
-           return;
-
-      } else if (arg1 === 'charizard-mega-x' || arg1 === 'charizard-mega-y') {
-        spriteId = arg1
-        dir = 'ani-shiny';
-        pcheck(spriteId) 
-          if (dc === 'dnc') { return } 
-        if (spriteId === 'charizard-mega-x') { message.channel.send(`${SPRITE_URL}${dir}/charizard-megax${ending}`) 
-        } else { message.channel.send(`${SPRITE_URL}${dir}/charizard-megay${ending}`) }
-          return;
-
-        } else if (arg1 === 'mewtwo-mega-x' || arg1 === 'mewtwo-mega-y') {
-        spriteId = arg1
-        dir = 'ani-shiny';
-        pcheck(spriteId) 
-          if (dc === 'dnc') { return } 
-        if (spriteId === 'mewtwo-mega-x') { message.channel.send(`${SPRITE_URL}${dir}/mewtwo-megax${ending}`) 
-        } else { message.channel.send(`${SPRITE_URL}${dir}/mewtwo-megay${ending}`) }
-          return;
-
-        } else {
-      spriteId = arg1
-      dir = 'ani-shiny';
-      pcheck(spriteId) 
-        if (dc === 'dnc') { return } 
+        let check = filtered.shift()
+  
+        if (check === undefined) {
+          interaction.reply({
+            content: `\`\`404 Error: Sprite cannot be found.\`\``
+          });
+          dc = 'dnc'
+          return dc 
+        }   
       }
-    } else if (arg === 'noani' || arg === 'na') {
-      dir = 'dex';
-      arg1 = arguments[1].toLowerCase()
-      spriteId = arg1
-      ending = '.png'
+
+  
+      if (arg === 'missingno' || arg === '0') {
+        dir = 'gen1';
+        ending = '.png'
+        spriteId = 'missingno'
+
+        interaction.reply({
+          content: `${SPRITE_URL}${dir}/${spriteId}${ending}`,
+        })
+
+        return
+  
+      } else if (arg === 'missingno-aerodactyl') {
+        dir = 'gen1';
+        ending = '.png'
+        spriteId = 'missingno-aerodactyl'
+
+        interaction.reply({
+          content: `${SPRITE_URL}${dir}/${spriteId}${ending}`,
+        })
+
+        return
+  
+      } else if (arg === 'missingno-kabutops') {
+        dir = 'gen1';
+        ending = '.png'
+        spriteId = 'missingno-kabutops'
+
+        interaction.reply({
+          content: `${SPRITE_URL}${dir}/${spriteId}${ending}`,
+        })
+
+        return
+  
+      } else if (arg === 'missingno-ghost') {
+        dir = 'gen1';
+        ending = '.png'
+        spriteId = 'missingno-ghost'
+
+        interaction.reply({
+          content: `${SPRITE_URL}${dir}/${spriteId}${ending}`,
+        })
+
+        return
+  
+      } else if (arg === 'missingno-yellow') {
+        dir = 'gen1';
+        ending = '.png'
+        spriteId = 'missingno-yellow'
+
+        interaction.reply({
+          content: `${SPRITE_URL}${dir}/${spriteId}${ending}`,
+        })
+
+        return
+      } 
+
       pcheck(spriteId) 
-      pcheck2(spriteId) 
-        if (dc === 'dnc') { return } 
-
-    } else if (arg === 'afd') {
-      dir = 'afd';
-      arg1 = arguments[1].toLowerCase()
-      spriteId = arg1
-      ending = '.png'
-      pcheck(spriteId) 
-        if (dc === 'dnc') { return } 
-
-    } else if (arg === 'female' || arg === 'f' ) {
-        arg1 = arguments[1].toLowerCase()
-        spriteId = (arg1 + '-f')
-        dir = 'ani'
-        pcheck(spriteId) 
-        if (dc === 'dnc') { return } 
-
-    } else if (arg === 'charizard-mega-x' || arg === 'charizard-mega-y') {
-      spriteId = arg
-      dir = 'ani';
-      pcheck(spriteId) 
-        if (dc === 'dnc') { return } 
-
-      if (spriteId === 'charizard-mega-x') { message.channel.send(`${SPRITE_URL}${dir}/charizard-megax${ending}`) 
-      } else { message.channel.send(`${SPRITE_URL}${dir}/charizard-megay${ending}`) }
-        return;
-
-      } else if (arg === 'mewtow-mega-x' || arg === 'mewtwo-mega-y') {
-        spriteId = arg
-        dir = 'ani';
-        pcheck(spriteId) 
           if (dc === 'dnc') { return } 
+
+      if (arg1 === true) {
+        dir = 'ani-shiny';
   
-        if (spriteId === 'mewtwo-mega-x') { message.channel.send(`${SPRITE_URL}${dir}/mewtwo-megax${ending}`) 
-        } else { message.channel.send(`${SPRITE_URL}${dir}/mewtwo-megay${ending}`) }
-          return;
+        if (arg2 === false) {
+          dir = 'gen5-shiny';
+          ending = '.png'
+
+          if (arg3 === true) {
+            dir = 'gen5-back-shiny'
+
+            if (arg4 === true) {
+              spriteId = (spriteId + '-f')
+
+              if (arg5 === true) {
+                dir = 'afd-back-shiny'
+              }
+            } else { 
+                if (arg5 === true) {
+                  dir = 'afd-back-shiny'
+                }
+            }
+          }
+        } 
+
+        else if (arg3 === true) {
+          dir = 'ani-back-shiny'
+
+            if (arg4 === true) {
+              spriteId = (spriteId + '-f')
+            }
+        }
+        
+        else if (arg5 === true) {
+          dir = 'afd-shiny';
+          ending = '.png'
+        } 
+      
+      else if (arg4 === true) {
+          spriteId = (spriteId + '-f')
+          dir = 'ani-shiny'
+      } 
+      
+      else if (arg === 'charizard-mega-x' || arg === 'charizard-mega-y') {
+        dir = 'ani-shiny'; 
+        dir = 'ani';
+          if (spriteId === 'charizard-mega-x') { 
+            spriteId = 'charizard-megax'
+          } else { 
+            spriteId = 'charizard-megay'
+          }
+      }
+        
+      else if (arg === 'mewtwo-mega-x' || arg === 'mewtwo-mega-y') {
+        dir = 'ani-shiny';
+          if (spriteId === 'mewtwo-mega-x') { 
+            spriteId = 'mewtwo-megax'
+          } else { 
+            spriteId = 'mewtwo-megay'
+        }
+      } 
+      } 
+    
+      else if (arg2 === false) {
+      dir = 'gen5';
+      ending = '.png'
   
-        } else {
-        spriteId = arg
-        dir = 'ani'
-        pcheck(spriteId) 
-        if (dc === 'dnc') { return } 
-    }
-     message.channel.send(`${SPRITE_URL}${dir}/${spriteId}${ending}`)
-  }
+      } else if (arg3 === true) {
+        dir = 'ani-back'; 
+
+      } else if (arg4 === true) {
+        spriteId = (spriteId + '-f')
+        dir = 'ani' 
+
+    } else if (arg5 === true) {
+        dir = 'afd';
+        ending = '.png'
+      } 
+      
+      else if (arg === 'charizard-mega-x' || arg === 'charizard-mega-y') {
+        dir = 'ani';
+          if (spriteId === 'charizard-mega-x') { 
+            spriteId = 'charizard-megax'
+          } else { 
+            spriteId = 'charizard-megay'
+          }
+        } 
+        
+        else if (arg === 'mewtow-mega-x' || arg === 'mewtwo-mega-y') {
+          dir = 'ani';
+            if (spriteId === 'mewtwo-mega-x') { 
+              spriteId = 'mewtwo-megax'
+            } else { 
+              spriteId = 'mewtwo-megay'
+            }
+          } 
+          
+          else {
+          dir = 'ani'
+      }
+        interaction.reply({
+          content: `${SPRITE_URL}${dir}/${spriteId}${ending}`,
+        })
+      }
+   }
 }

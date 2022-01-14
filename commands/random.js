@@ -1,7 +1,7 @@
 const {Dex} = require('pokemon-showdown');
 const Discord = require('discord.js')
-const emojis = [{
-    type: 'Rock', emoji: '<:Rock:862271572387430411>'}, 
+const emojis = [
+    {type: 'Rock', emoji: '<:Rock:862271572387430411>'}, 
     {type:'Psychic', emoji: '<:Psychic:862271574430187560>'},
     {type:'Poison', emoji: '<:Poison:862271574492315648>'},
     {type:'Normal', emoji: '<:Normal:862271574526132234>'},
@@ -18,43 +18,40 @@ const emojis = [{
     {type:'Dark', emoji: '<:Dark:862271127014604800>'},
     {type:'Bug', emoji: '<:Bug:862271574660874260>'},
     {type:'Water', emoji: '<:Water:862271572201701406>'},
-    {type: 'Bird', emoji: '🐦'},
     {type:'Steel', emoji: '<:Steel:862271572470923274>'
 }];
 
-
 module.exports = {
-    commands: ['random', 'r'],
-    aliases: ['r'],
+    category: 'Other',
     description: "Selects a random pokemon",
-    callback: (message, arguments) => { 
+    slash: true,
+    testOnly: false,
 
+    callback: ({interaction}) => { 
+
+        const target = interaction.guild.members.cache.get(interaction.member.id)
         var number = Math.floor(Math.random() * 898)
-
         var id_filter = `${number}`;
-
-        let result = ''
-
+        //let result = ''
+        let type = ''
+        let ability = ''
         const pokemon = Dex.species.all()
 
               var filtered = pokemon.filter(function(item) {
                   return id_filter.indexOf(item.num) !== -1 && item.num === number;
               });
 
-        //get random pokemon 
-
-        msg = message.content
-        
-        check = msg.split(" ")
-
         let random = Math.floor(Math.random() * filtered.length)
+/*
+        testing2 = message.content
+        testing = testing2.split(" ")
 
-        if (check.length > 1) { 
+        if (testing.length > 1) { 
 
-            tiers = arguments[0]
+            test = arguments[0]
 
             var filtered2 = pokemon.filter(function(item) {
-                return tiers.indexOf(item.tier) !== -1 
+                return test.indexOf(item.tier) !== -1 //&& item.num === number;
             });
 
             random = Math.floor(Math.random() * filtered2.length)
@@ -62,15 +59,19 @@ module.exports = {
 
         } else {result = filtered[random]}
 
-
         if (result === undefined) {
-            message.channel.send('Tier not found. please try again.')
+            interaction.reply({
+                content: 'Tier not found. please try again.',
+                ephemeral: true,
+            })
             return
         }
+*/
+        const result = filtered[random] //block this out if you decide to allow random by tier, another idea, random by type
 
         let name = result.name
         let ID = result.spriteid
-        let ID2 = result.name.toLowerCase()
+        //let ID2 = result.name.toLowerCase()
         let NUM = result.num
         let HP = result.baseStats.hp
         let ATK = result.baseStats.atk
@@ -81,8 +82,8 @@ module.exports = {
         let TYPE = result.types
             str = `${TYPE}`
             pokeT = str.split(",");
-            TYPE1 = pokeT[0]
-            TYPE2 = pokeT[1]
+            let TYPE1 = pokeT[0]
+            let TYPE2 = pokeT[1]
             
            var res1 = []
            emojis.filter((obj) => {
@@ -97,11 +98,9 @@ module.exports = {
            let TYPE3 = res2.emoji
            
            if (TYPE2 === undefined) {
-
             type = (TYPE3 + ' ' + TYPE1)
 
         } else { 
-        
             var res3 = []
             emojis.filter((obj) => {
              Object.keys(obj).forEach((key) => {
@@ -118,22 +117,19 @@ module.exports = {
 
         let TIER = result.tier
         let ABILITY = result.abilities[0]
-        let HT = result.heightm
-        let WT = result.weightkg
-        //let DESC = result.shortDesc // TBA
+        //let HT = result.heightm
+        //let WT = result.weightkg
+        //let DESC = result.shortDesc
         let ABILITY1 = result.abilities[1]
         let ABILITYH = result.abilities['H']
 
         if (ABILITY1 === undefined && ABILITYH === undefined) {
-
             ability = ABILITY 
 
         } else if (ABILITYH === undefined) {
-
             ability = ABILITY + '\n' + ABILITY1 
 
            } else if (ABILITY1 === undefined) {
-
             ability = ABILITY + '\n' + ABILITYH + ' \`\`(H)\`\`'
 
             } else { 
@@ -156,12 +152,15 @@ module.exports = {
             { name: 'Base Sp.Atk', value: `💥 ${SPA}`, inline: true },
             { name: 'Base Sp.Def', value: `🔰 ${SPD}`, inline: true },
             { name: 'Base Speed', value: `⚡ ${SPE}`, inline: true },
+            //{ name: '\u200B', value: '\u200B' }
         )
         .setImage(image)
-        .setFooter(message.author.username, message.author.displayAvatarURL({ format: 'png', size: 256, dynamic: true }))
-        .setTimestamp()
+       // .setFooter(`${target.displayName}`, target.user.displayAvatarURL({ format: 'png', size: 256, dynamic: true }))
+       // .setTimestamp()
 
-        message.channel.send(embed)
-
+        interaction.reply({
+            embeds: [embed],
+            ephemeral: false,
+        })
     }
 }

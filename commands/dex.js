@@ -24,15 +24,25 @@ const emojis = [{
 }];
 
 module.exports = {
-    commands: ['dex', 'd'],
-    aliases: ['d'],
+    category: 'Pokedex',
     description: "Shows a PokeDex entry",
     minArgs: 1,
-    expectedArgs: "<pokemon name or number>",
-    callback: (message) => { 
+    expectedArgs: "<Pokemon Name or Number>",
+    slash: true,
+    testOnly: false,
+    ephemeral: false,
+    options: [
+        {
+            name: 'pokemon',
+            description: 'Pokemon Name or Number',
+            required: true,
+            type: Discord.Constants.ApplicationCommandOptionTypes.STRING  
+        },
+    ],
 
-        let command = message.content.substring(message.content.indexOf(" ") + 1, message.content.length);
-               
+    callback: ({interaction}) => { 
+
+        let command = interaction.options.getString('pokemon')    
         const number = command
         poke = number.toLowerCase()
         const pokemon = Dex.species.all()
@@ -47,12 +57,11 @@ module.exports = {
               });
 
               let result = filtered.shift()
-
-              if (result === undefined) {
-                  message.reply('please enter a valid dex entry!');
-      
-                  return;
-              }
+                if (result === undefined) {
+                    message.reply('please enter a valid dex entry!');
+        
+                    return;
+                }
       
               let name = result.name
               let NUM = result.num
@@ -66,8 +75,7 @@ module.exports = {
               
                  TYPE1 = '🐦'
                  TYPE2 = '<:Normal:862271574526132234>'
-
-                type = TYPE1 + '\n' + TYPE2
+                    type = TYPE1 + '\n' + TYPE2
 
               let HT = result.heightm
               let WT = result.weightkg
@@ -78,7 +86,6 @@ module.exports = {
               .setTitle(`${name}`)
               .setDescription('**???**')
               .setColor('#ff0000')
-              //.setDescription('Here is the Dex entry you requested!')
               .addFields(
                   { name: 'Type', value: `${type}`, inline: true },
                   { name: 'Abilities', value: ability, inline: true },
@@ -93,20 +100,23 @@ module.exports = {
               .setImage(`http://play.pokemonshowdown.com/sprites/gen1/missingno.png`)
               .setFooter(`| Height: ${HT} m | Weight: ${WT} kg |`, `https://i.imgur.com/TSTyfLb.png`)
 
-              message.channel.send(mnoembed)      
-
+              interaction.reply({
+                  embeds: [mnoembed],
+                  ephemeral: false,
+              })      
         return
 
         } else if (id_filter >= 1 && id_filter <= 898) {
             no = `${number}`
-
             var filtered = pokemon.filter(function(item) {
                 return no.indexOf(item.num) !== -1 && item.num == `${no}`;
             });
 
         } else if (id_filter < 0 || id_filter >= 899) {
-            message.reply('please enter a valid dex entry!');
-
+            interaction.reply({
+                content: 'Please enter a valid dex entry!',
+                ephemeral: true,
+            });
             return;
 
         } else if (!Number.isInteger(id_filter)) {
@@ -132,11 +142,13 @@ module.exports = {
                         return poke6.indexOf(item.name) !== -1 && item.name == 'Mr. Mime-Galar'
                     });
                 } else {
-                    message.channel.send('Please Check for Spelling Errors. <@!471026063498018823> has been notified.')
+                    interaction.reply({
+                        content: 'Please Check for Spelling Errors. Please notify <@!471026063498018823>!',
+                        ephemeral: true,
+                    })
                         return
                 }
             } else { 
-                
                 poke4 = poke3.join("")
 
                 var filtered = pokemon.filter(function(item) {
@@ -155,23 +167,28 @@ module.exports = {
               });
 
             }  else if (poke3.length = 1) {
-
                 poke4 = poke3.join("")
                 
                 var filtered = pokemon.filter(function(item) {
                return poke4.indexOf(item.id) !== -1 && item.id === `${poke4}`
                 }); 
-            } else { message.channel.send('Please Check for Spelling Errors or Report to enlighten1self.')
-            return 
+            } else { 
+                interaction.reply({
+                    content: 'Please Check for Spelling Errors. Please notify <@!471026063498018823>!',
+                    ephemeral: true,
+                })
+             return 
             }
         }
 
         let result = filtered.shift()
-
-        if (result === undefined) {
-            message.reply('please enter a valid dex entry!');
-            return;
-        }
+            if (result === undefined) {
+                interaction.reply({
+                    content: 'Please enter a valid dex entry!',
+                    ephemeral: true,
+                });
+                return;
+            }
 
         let name = result.name
         let ID = result.spriteid
@@ -200,13 +217,10 @@ module.exports = {
 
            let res2 = res1.shift()
            let TYPE3 = res2.emoji
-           
                 if (TYPE2 === undefined) {
-
                     type = (TYPE3 + ' ' + TYPE1)
 
                 } else { 
-                
                     var res3 = []
                     emojis.filter((obj) => {
                      Object.keys(obj).forEach((key) => {
@@ -228,7 +242,7 @@ module.exports = {
 
         var filter2 = test2.filter(function(item) {
             return ID2.indexOf(item.name) !== -1 
-             })
+            })
 
         let DESC = ''
         let SPECIES = ''
@@ -243,22 +257,18 @@ module.exports = {
     
         let ABILITY1 = result.abilities[1]
         let ABILITYH = result.abilities['H']
+            if (ABILITY1 === undefined && ABILITYH === undefined) {
+                ability = ABILITY 
 
-        if (ABILITY1 === undefined && ABILITYH === undefined) {
+            } else if (ABILITYH === undefined) {
+                ability = ABILITY + '\n' + ABILITY1 
 
-            ability = ABILITY 
-
-        } else if (ABILITYH === undefined) {
-
-            ability = ABILITY + '\n' + ABILITY1 
-
-           } else if (ABILITY1 === undefined) {
-
+            } else if (ABILITY1 === undefined) {
             ability = ABILITY + '\n' + ABILITYH + ' \`\`(H)\`\`'
 
             } else { 
-               ability = ABILITY + '\n' + ABILITY1 + '\n' + ABILITYH + ' \`\`(H)\`\`'
-              }
+                ability = ABILITY + '\n' + ABILITY1 + '\n' + ABILITYH + ' \`\`(H)\`\`'
+                }
 
         icons = `https://play.pokemonshowdown.com/sprites/gen5/${ID}.png`
         image = `https://play.pokemonshowdown.com/sprites/ani/${ID}.gif`
@@ -282,7 +292,9 @@ module.exports = {
         .setImage(image)
         .setFooter(`| Height: ${HT} m | Weight: ${WT} kg |`, `https://i.imgur.com/TSTyfLb.png`)
 
-        message.channel.send(embed)
-
+        interaction.reply({
+            embeds: [embed],
+            ephemeral: false,
+        })  
     }
 }

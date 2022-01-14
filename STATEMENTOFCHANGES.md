@@ -1,0 +1,1 @@
+Changes of the Porygon code will be documented in a separate Repository which can be found here: https://github.com/TeamEnlighten/bot-js 

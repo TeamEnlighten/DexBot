@@ -1,5 +1,13 @@
 {
-    "token": "<insert token here>",
-    "prefix": "?" 
+    "AIRTABLE_KEY": "<FILL",
+    "BASE_ID": "<FILL IN>",
+    "USERNAME": "<FILL IN>",
+    "PASSWORD": "<FILL IN>",
+    "activity": {
+        "streaming": true,
+        "game": "over the PokeDex Data! For more, use /help",
+        "stream": "Shiny Raids and More!",
+        "streamlink": "https://www.twitch.tv/enlighten1self"
 
+       } 
 }
